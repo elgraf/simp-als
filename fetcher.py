@@ -30,7 +30,7 @@ from config import (
     DETAILED_ADVERT,
     EXCHANGE_URL
 )
-from common import connect_redis, dequeue, retry, get_exchange_rates
+from common import connect_redis, dequeue, retry
 
 @retry(10, OperationFailure, 3)
 async def do_update(collection, *args, **kwargs):
