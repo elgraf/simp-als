@@ -40,7 +40,7 @@ A Docker compose file is supplied for running the entire stack locally.
 
 ### :construction: Steps to launch the development environment:
 1. `docker-compose up --no-start && docker-compose start`
-2. `docker exec -it simpals_microservices_db_1 mongo`
+2. `docker exec -it simp-als_db_1 mongo`
 3. `rs.initate()`
 
 
@@ -52,6 +52,6 @@ A Docker compose file is supplied for running the entire stack locally.
 ### :squirrel: Database management
 Connect to mongo-database:
 ```bash
-docker exec -it simpals_microservices_db_1 mongo
+docker exec -it simp-als_db_1 mongo
 Use desired query :))
 ```
