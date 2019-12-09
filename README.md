@@ -40,8 +40,10 @@ A Docker compose file is supplied for running the entire stack locally.
 
 ### :construction: Steps to launch the development environment:
 1. `docker-compose up --no-start && docker-compose start`
-2. `docker exec -it simp-als_db_1 mongo`
-3. `rs.initate()`
+2. `docker-compose ps`
+3. `Find specific container name for db ( for example, simp_als_db_1)`
+4. `docker exec -it $name_of_container_found_in_step_3 mongo`
+5. `rs.initate()`
 
 
 
