@@ -10,7 +10,7 @@ elasticearch in realtime :).
 * I decided I wanted this to be fully distributed, so I split the logic into several worker processes who coordinate via [Redis][redis] queues, orchestrated using `docker-compose`
 * I decided to take a ride on the bleeding edge and refactored everything to use from tornado to `asyncio/uvloop`
 * Rather than just convert EU to MDL everytime , I also decided to stock all BNM rates into mongodb
-* To index all needed data live into Elasticsearch, I used monstache. The main dependency is to run mongodb as replica( I decided to simply convert standalone mongodb server into replica mode)
+* To index all needed data live into Elasticsearch, I used monstache. The main dependency is to run mongodb as replica( I decided to simply convert standalone mongodb server into replica mode) 
 
 
 ## ToDo
