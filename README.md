@@ -53,14 +53,14 @@ A Docker compose file is supplied for running the entire stack locally.
 ### :fire: Steps to access API:
 URI Parameters:
 page: Page number, default : 1
-page_size: Number of elements per page, default:50
+per_page: Number of elements per page, default:50
 
-'Example : `curl -X get "http://localhost:8000/raw_adverts?page=1&page_size=1`'
+'Example : `curl -X get "http://localhost:8000/raw_adverts?page=1&per_page=1`'
 
 
 1. 'Get all detailed adverts : `curl -X get "http://localhost:8000/adverts` '
 2. 'Get all raw adverts : `curl -X get "http://localhost:8000/raw_adverts` '
-3. 'Get specific raw advert': `curl -X get "http://localhost:8000/raw_adverts/62733250?page=1&page_size=1" `
+3. 'Get specific raw advert': `curl -X get "http://localhost:8000/raw_adverts/62733250?page=1&per_page1" `
 
 
 ### :squirrel: Database management
