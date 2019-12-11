@@ -2,6 +2,9 @@ import logging
 import sys
 from os import environ
 
+HTTP_PORT = int(environ.get('HTTP_PORT', 8000))
+BIND_ADDRESS = environ.get('BIND_ADDRESS', '0.0.0.0')
+
 MONGO_SERVER = environ.get('MONGO_SERVER', 'db:27017')
 REDIS_SERVER = environ.get('REDIS_SERVER', 'redis:6379')
 REDIS_NAMESPACE = environ.get('REDIS_NAMESPACE', 'simpalspipe:')

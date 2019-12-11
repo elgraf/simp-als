@@ -53,3 +53,15 @@ services:
       - redis
     working_dir: /simpals
     command: python -u fetcher.py
+
+  web:
+    build: .
+    volumes:
+      - .:/simpals
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8000:8000"
+    working_dir: /simpals
+    command: python -u web.py
