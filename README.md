@@ -52,8 +52,10 @@ A Docker compose file is supplied for running the entire stack locally.
 
 ### :fire: Steps to access API:
 URI Parameters:
-page: Page number, default : 1
-per_page: Number of elements per page, default:50
+ 
+ 1. page: Page number, default : 1
+ 2. per_page: Number of elements per page, default:50
+
 
 'Example : `curl -X get "http://localhost:8000/raw_adverts?page=1&per_page=1`'
 
