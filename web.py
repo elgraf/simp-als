@@ -39,7 +39,7 @@ async def adverts(req, advert_id=None):
         data = await db.adverts.find({'advert_id': advert_id}, fields).skip(page * limit).to_list(limit)
     else:
         data = await db.adverts.find({}, fields).skip(page * limit).to_list(limit)
-    return json(dumps(data, ensure_ascii=False, default=json_util.default))
+    return json(dumps({"page": page + 1, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
 
 
 @app.route('/raw_adverts/', methods=['GET'])
@@ -57,7 +57,7 @@ async def raw_adverts(req, advert_id=None):
         data = await db.feeds.find({'advert_id': advert_id}, fields).skip(page * limit).to_list(limit)
     else:
         data = await db.feeds.find({}, fields).skip(page * limit).to_list(limit)
-    return json(dumps(data, ensure_ascii=False, default=json_util.default))
+    return json(dumps({"page": page + 1, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
 
 
 @app.listener('after_server_start')
