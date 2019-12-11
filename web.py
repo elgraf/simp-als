@@ -31,15 +31,15 @@ async def adverts(req, advert_id=None):
     """Paged navigation of adverts using aiocache to lessen database hits."""
 
     limit = int(req.args.get('page_size', 50))
-    page = int(req.args.get('page', 1)) - 1
+    page = int(req.args.get('page', 1))
 
     # hide system fields
     fields = {'_id': 0, 'checksum': 0, 'created': 0, 'last_fetched': 0}
     if advert_id:
-        data = await db.adverts.find({'advert_id': advert_id}, fields).skip(page * limit).to_list(limit)
+        data = await db.adverts.find({'advert_id': advert_id}, fields).skip((page - 1) * limit).to_list(limit)
     else:
-        data = await db.adverts.find({}, fields).skip(page * limit).to_list(limit)
-    return json(dumps({"page": page + 1, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
+        data = await db.adverts.find({}, fields).skip((page - 1) * limit).to_list(limit)
+    return json(dumps({"page": page, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
 
 
 @app.route('/raw_adverts/', methods=['GET'])
@@ -49,15 +49,15 @@ async def raw_adverts(req, advert_id=None):
     """ Paged navigation of raw_adverts - using aiocache to lessen database hits. """
 
     limit = int(req.args.get('page_size', 50))
-    page = int(req.args.get('page', 1)) - 1
+    page = int(req.args.get('page', 1))
 
     # hide system fields
     fields = {'_id': 0, 'checksum': 0, 'created': 0, 'last_fetched': 0}
     if advert_id:
-        data = await db.feeds.find({'advert_id': advert_id}, fields).skip(page * limit).to_list(limit)
+        data = await db.feeds.find({'advert_id': advert_id}, fields).skip((page - 1) * limit).to_list(limit)
     else:
-        data = await db.feeds.find({}, fields).skip(page * limit).to_list(limit)
-    return json(dumps({"page": page + 1, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
+        data = await db.feeds.find({}, fields).skip((page - 1) * limit).to_list(limit)
+    return json(dumps({"page": page, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
 
 
 @app.listener('after_server_start')
