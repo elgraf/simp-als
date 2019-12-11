@@ -2,10 +2,7 @@
 
 """ Web server """
 from multiprocessing import cpu_count
-from json import dumps
 
-from bson import json_util
-from aiocache import cached
 from motor.motor_asyncio import AsyncIOMotorClient
 from sanic import Sanic
 from sanic.response import json
@@ -17,7 +14,7 @@ from config import (
     MONGO_SERVER,
     log
 )
-
+from sanic_paginate import Pagination
 
 app = Sanic(__name__)
 
@@ -26,38 +23,41 @@ db = None
 
 @app.route('/adverts/', methods=['GET'])
 @app.route('/adverts/<advert_id>', methods=['GET'])
-@cached(ttl=20)
 async def adverts(req, advert_id=None):
     """Paged navigation of adverts using aiocache to lessen database hits."""
 
-    limit = int(req.args.get('page_size', 50))
-    page = int(req.args.get('page', 1))
+    page, per_page, offset = Pagination.get_page_args(req)
 
     # hide system fields
     fields = {'_id': 0, 'checksum': 0, 'created': 0, 'last_fetched': 0}
     if advert_id:
-        data = await db.adverts.find({'advert_id': advert_id}, fields).skip((page - 1) * limit).to_list(limit)
+        data = await db.adverts.find({'advert_id': advert_id}, fields).skip(offset).to_list(per_page)
+        total = len(data)
+
     else:
-        data = await db.adverts.find({}, fields).skip((page - 1) * limit).to_list(limit)
-    return json(dumps({"page": page, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
+        data = await db.adverts.find({}, fields).skip(offset).to_list(per_page)
+        total = len(data)
+    pagination = Pagination(req, total=total, data=data)
+    return json(pagination)
 
 
 @app.route('/raw_adverts/', methods=['GET'])
 @app.route('/raw_adverts/<advert_id>', methods=['GET'])
-@cached(ttl=20)
 async def raw_adverts(req, advert_id=None):
     """ Paged navigation of raw_adverts - using aiocache to lessen database hits. """
 
-    limit = int(req.args.get('page_size', 50))
-    page = int(req.args.get('page', 1))
+    page, per_page, offset = Pagination.get_page_args(req)
 
     # hide system fields
     fields = {'_id': 0, 'checksum': 0, 'created': 0, 'last_fetched': 0}
     if advert_id:
-        data = await db.feeds.find({'advert_id': advert_id}, fields).skip((page - 1) * limit).to_list(limit)
+        data = await db.feeds.find({'advert_id': advert_id}, fields).skip(offset).to_list(per_page)
+        total = len(data)
     else:
-        data = await db.feeds.find({}, fields).skip((page - 1) * limit).to_list(limit)
-    return json(dumps({"page": page, "limit": limit, "data": data}, ensure_ascii=False, default=json_util.default))
+        data = await db.feeds.find({}, fields).skip(offset).to_list(per_page)
+        total = len(data)
+    pagination = Pagination(req, total=total, data=data)
+    return json(pagination)
 
 
 @app.listener('after_server_start')
