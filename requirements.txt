@@ -11,5 +11,5 @@ multidict==4.6.1
 pymongo==3.9.0
 uvloop==0.14.0
 yarl==1.4.1
-sanic==19.9.0
+sanic==20.12.6
 aiocache==0.11.1
